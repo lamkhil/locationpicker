@@ -137,7 +137,7 @@ class PlacePickerState extends State<PlacePicker> {
           locationResult = null;
           _delayedPop();
           return Future.value(false);
-        }  else  {
+        } else {
           return Future.value(true);
         }
       },
@@ -193,14 +193,21 @@ class PlacePickerState extends State<PlacePicker> {
                     Padding(
                       child: Text(widget.localizationItem!.nearBy,
                           style: TextStyle(fontSize: 16)),
-                      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                     ),
                     Expanded(
                       child: ListView(
                         children: nearbyPlaces
                             .map((it) => NearbyPlaceItem(it, () {
-                                  if (it.latLng != null) {
-                                    moveToLocation(it.latLng!);
+                                  // if (it.latLng != null) {
+                                  //   moveToLocation(it.latLng!);
+                                  // }
+                                  if (Platform.isAndroid) {
+                                    _delayedPop();
+                                  } else {
+                                    Navigator.of(context)
+                                        .pop(this.locationResult);
                                   }
                                 }))
                             .toList(),
